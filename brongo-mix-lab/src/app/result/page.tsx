@@ -1,3 +1,56 @@
 "use client";
-import Link from "next/link";import {Header} from "@/components/Header";import {Mascot} from "@/components/Brand";import {ingredients} from "@/content/ingredients";import {useGame} from "@/features/game/GameProvider";import {calculateScore,getReaction} from "@/features/game/score";
-export default function Result(){const{state,ready,reset}=useGame();const selected=ingredients.filter(i=>state.selectedIds.includes(i.id));if(!ready)return null;if(!selected.length)return <><Header/><main id="main" className="page-shell page-head"><Mascot/><h1>ยังไม่มีสูตรให้แสดงผล</h1><p>กลับไปเลือกอย่างน้อย 1 ส่วนผสม แล้วมาดูผลลัพธ์กัน</p><Link className="button primary" href="/mix">ไปที่ห้องผสมยา</Link></main></>;const score=calculateScore(selected.map(i=>i.isBrongoMatch))!;const reaction=getReaction(score);return <><Header/><main id="main" className="page-shell"><section className="score-hero"><p className="eyebrow">ผลการผสมของคุณ</p><Mascot happy={score>=50}/><div className="score">{score}%</div><h1>{reaction.headline}</h1><p>{reaction.copy}</p><p className="helper">คะแนนคำนวณจากส่วนผสมที่เลือกแล้วมีใน BRONGO หารด้วยส่วนผสมทั้งหมดที่เลือก และไม่ได้วัดว่าคุณเลือกครบทั้งสูตรหรือไม่</p></section><h2>มาดูส่วนผสมที่คุณเลือกกัน</h2><div className="result-list">{selected.map(item=><article className="result-card" key={item.id}><p className={`result-status ${item.isBrongoMatch?"match":""}`}>{item.isBrongoMatch?"✓ มีใน BRONGO":"× ไม่มีใน BRONGO"}</p><h3>{item.name}</h3><p>{item.name} {item.isBrongoMatch?"เป็นส่วนหนึ่ง":"ไม่ได้อยู่ใน"}สูตร BRONGO</p>{item.funFact&&<div className="fact"><b>รู้หรือไม่?</b><p>{item.funFact}</p></div>}</article>)}</div><div className="result-actions"><Link className="button primary" href="/brongo">ดูข้อมูล BRONGO →</Link><Link className="button secondary" href="/mix">แก้สูตรนี้</Link><Link className="button ghost" href="/mix" onClick={reset}>ผสมใหม่</Link></div></main></>}
+import { useEffect } from "react";
+import Link from "next/link";
+import { Header } from "@/components/Header";
+import { Mascot } from "@/components/brand/Mascot";
+import { ScoreDisplay } from "@/components/game/ScoreDisplay";
+import { ResultIngredient } from "@/components/game/ResultIngredient";
+import { ingredients } from "@/content/ingredients";
+import { useGame } from "@/features/game/GameProvider";
+import { selectIngredients } from "@/features/game/selectors";
+import { calculateScore, getReaction } from "@/features/game/score";
+import { track } from "@/lib/analytics";
+
+export default function Result() {
+  const { state, ready, reset } = useGame();
+  const selected = selectIngredients(ingredients, state.selectedIds);
+  const score = selected.length ? calculateScore(selected.map((i) => i.isBrongoMatch)) : null;
+  const reaction = score != null ? getReaction(score) : null;
+  const band = reaction?.state;
+
+  useEffect(() => {
+    if (ready && band) track("result_viewed", { scoreBand: band, selectedCount: selected.length });
+  }, [ready, band, selected.length]);
+
+  if (!ready) return null;
+  if (!selected.length || score == null || !reaction)
+    return (
+      <>
+        <Header />
+        <main id="main" className="page-shell page-head">
+          <Mascot state="empty" decorative={false} />
+          <h1>ยังไม่มีสูตรให้แสดงผล</h1>
+          <p>กลับไปเลือกอย่างน้อย 1 ส่วนผสม แล้วมาดูผลลัพธ์กัน</p>
+          <Link className="button primary" href="/mix">ไปที่ห้องผสมยา</Link>
+        </main>
+      </>
+    );
+
+  return (
+    <>
+      <Header />
+      <main id="main" className="page-shell">
+        <ScoreDisplay score={score} reaction={reaction} />
+        <h2>มาดูส่วนผสมที่คุณเลือกกัน</h2>
+        <div className="result-list">
+          {selected.map((item) => <ResultIngredient key={item.id} item={item} />)}
+        </div>
+        <div className="result-actions">
+          <Link className="button primary" href="/brongo">ดูข้อมูล BRONGO →</Link>
+          <Link className="button secondary" href="/mix" onClick={() => track("mix_edited", { previousScoreBand: reaction.state })}>แก้สูตรนี้</Link>
+          <Link className="button ghost" href="/mix" onClick={() => { track("mix_restarted", { sourceRoute: "/result" }); reset(); }}>ผสมใหม่</Link>
+        </div>
+      </main>
+    </>
+  );
+}
