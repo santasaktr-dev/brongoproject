@@ -1,7 +1,20 @@
+import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Mascot } from "@/components/brand/Mascot";
 import { ProductVisual } from "@/components/brand/ProductVisual";
 import { StartButton } from "@/components/game/StartButton";
+import { clampScore } from "@/features/share/shareLinks";
+
+// เมื่อเปิดจากลิงก์ที่แชร์ (`/?s=<score>`) ให้การ์ดพรีวิว (OG/Twitter) โชว์คะแนนนั้น
+export async function generateMetadata({ searchParams }: { searchParams: Promise<{ s?: string }> }): Promise<Metadata> {
+  const { s } = await searchParams;
+  if (s === undefined) return {};
+  const image = `/api/og?score=${clampScore(Number(s))}`;
+  return {
+    openGraph: { images: [image] },
+    twitter: { card: "summary_large_image", images: [image] },
+  };
+}
 
 export default function Home() {
   return (

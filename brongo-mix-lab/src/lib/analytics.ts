@@ -14,6 +14,8 @@ export type AnalyticsEvents = {
   product_section_opened: { sectionId: string };
   mix_edited: { previousScoreBand: string };
   mix_restarted: { sourceRoute: string };
+  result_shared: { channel: "line" | "copy"; scoreBand: string };
+  pharmacist_contact_clicked: { sourceRoute: string };
 };
 
 type EventName = keyof AnalyticsEvents;
@@ -29,6 +31,8 @@ const ALLOWLIST: Record<EventName, readonly string[]> = {
   product_section_opened: ["sectionId"],
   mix_edited: ["previousScoreBand"],
   mix_restarted: ["sourceRoute"],
+  result_shared: ["channel", "scoreBand"],
+  pharmacist_contact_clicked: ["sourceRoute"],
 };
 
 export const isAnalyticsEnabled = () => process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === "true";

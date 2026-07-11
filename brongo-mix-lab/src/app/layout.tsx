@@ -2,10 +2,15 @@ import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import "./globals.css";
 import { GameProvider } from "@/features/game/GameProvider";
+import { SITE_URL } from "@/config/links";
 
 const kanit = Kanit({ subsets: ["latin", "thai"], weight: ["400", "500", "600", "700", "800"], variable: "--font-kanit", display: "swap" });
 
-export const metadata: Metadata = { title: "BRONGO Mix Lab", description: "ทดลองเลือกส่วนผสมและเรียนรู้เรื่อง BRONGO" };
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: "BRONGO Mix Lab",
+  description: "ทดลองเลือกส่วนผสมและเรียนรู้เรื่อง BRONGO",
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

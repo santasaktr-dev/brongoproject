@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { ProductSummary } from "@/components/product/ProductSummary";
 import { ProductAccordion } from "@/components/product/ProductAccordion";
+import { AskPharmacistButton } from "@/components/product/AskPharmacistButton";
 import { Accordion } from "@/components/ui/Accordion";
 import { manufacturer, productNotice } from "@/content/product";
 import { faqs } from "@/content/faq";
@@ -30,6 +31,7 @@ export default function Brongo() {
         </header>
         <ProductSummary />
         <p className="notice">{productNotice}</p>
+        <AskPharmacistButton sourceRoute="/brongo" />
         <ProductAccordion onOpen={openSection} />
         <h2>คำถามที่พบบ่อย</h2>
         <Accordion onOpen={openSection} items={faqs.map((f) => ({ id: f.id, title: f.question, body: <p>{f.answer}</p> }))} />

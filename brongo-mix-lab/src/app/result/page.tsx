@@ -4,7 +4,9 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Mascot } from "@/components/brand/Mascot";
 import { ScoreDisplay } from "@/components/game/ScoreDisplay";
+import { ShareButtons } from "@/components/game/ShareButtons";
 import { ResultIngredient } from "@/components/game/ResultIngredient";
+import { AskPharmacistButton } from "@/components/product/AskPharmacistButton";
 import { ingredients } from "@/content/ingredients";
 import { useGame } from "@/features/game/GameProvider";
 import { selectIngredients } from "@/features/game/selectors";
@@ -45,11 +47,13 @@ export default function Result() {
         <div className="result-list">
           {selected.map((item) => <ResultIngredient key={item.id} item={item} />)}
         </div>
+        <ShareButtons score={score} scoreBand={reaction.state} />
         <div className="result-actions">
           <Link className="button primary" href="/brongo">ดูข้อมูล BRONGO →</Link>
           <Link className="button secondary" href="/mix" onClick={() => track("mix_edited", { previousScoreBand: reaction.state })}>แก้สูตรนี้</Link>
           <Link className="button ghost" href="/mix" onClick={() => { track("mix_restarted", { sourceRoute: "/result" }); reset(); }}>ผสมใหม่</Link>
         </div>
+        <AskPharmacistButton sourceRoute="/result" />
       </main>
     </>
   );
