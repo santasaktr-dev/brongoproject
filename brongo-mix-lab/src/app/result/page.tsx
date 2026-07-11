@@ -48,10 +48,13 @@ export default function Result() {
           {selected.map((item) => <ResultIngredient key={item.id} item={item} />)}
         </div>
         <ShareButtons score={score} scoreBand={reaction.state} />
-        <div className="result-actions">
+        <div className="next-steps">
           <Link className="button primary" href="/brongo">ดูข้อมูล BRONGO →</Link>
-          <Link className="button secondary" href="/mix" onClick={() => track("mix_edited", { previousScoreBand: reaction.state })}>แก้สูตรนี้</Link>
-          <Link className="button ghost" href="/mix" onClick={() => { track("mix_restarted", { sourceRoute: "/result" }); reset(); }}>ผสมใหม่</Link>
+          <div className="minor-actions">
+            <Link className="button ghost" href="/mix" onClick={() => track("mix_edited", { previousScoreBand: reaction.state })}>แก้สูตรนี้</Link>
+            <span className="minor-sep" aria-hidden="true">·</span>
+            <Link className="button ghost" href="/mix" onClick={() => { track("mix_restarted", { sourceRoute: "/result" }); reset(); }}>ผสมใหม่</Link>
+          </div>
         </div>
         <AskPharmacistButton sourceRoute="/result" />
       </main>

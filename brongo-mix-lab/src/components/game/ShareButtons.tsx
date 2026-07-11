@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { LineIcon } from "@/components/ui/LineIcon";
 import { buildLineShareHref, buildShareText } from "@/features/share/shareLinks";
 import { track } from "@/lib/analytics";
 
@@ -28,6 +29,7 @@ export function ShareButtons({ score, scoreBand }: { score: number; scoreBand: s
           rel="noopener noreferrer"
           onClick={() => track("result_shared", { channel: "line", scoreBand })}
         >
+          <LineIcon />
           แชร์ไป LINE
         </a>
         <button type="button" className="button secondary" onClick={onCopy}>

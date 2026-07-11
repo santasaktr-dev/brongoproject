@@ -1,4 +1,5 @@
 "use client";
+import { LineIcon } from "@/components/ui/LineIcon";
 import { LINE_OA_URL } from "@/config/links";
 import { track } from "@/lib/analytics";
 
@@ -7,12 +8,13 @@ export function AskPharmacistButton({ sourceRoute }: { sourceRoute: string }) {
   return (
     <div className="ask-pharmacist">
       <a
-        className="button secondary"
+        className="button secondary ask-pharmacist-btn"
         href={LINE_OA_URL}
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => track("pharmacist_contact_clicked", { sourceRoute })}
       >
+        <LineIcon className="line-icon-green" />
         ถามเภสัชกร (LINE)
       </a>
       <p className="helper">มีคำถามเรื่องยา? ปรึกษาเภสัชกรได้ ข้อมูลในเว็บไม่ใช้แทนคำแนะนำจากแพทย์และเภสัชกร</p>
