@@ -51,9 +51,9 @@ export default function Result() {
         <div className="next-steps">
           <Link className="button primary" href="/brongo">ดูข้อมูล BRONGO →</Link>
           <div className="minor-actions">
-            <Link className="button ghost" href="/mix" onClick={() => track("mix_edited", { previousScoreBand: reaction.state })}>แก้สูตรนี้</Link>
+            <Link className="button ghost" href="/mix" onClick={() => track("mix_edited", { previousScoreBand: reaction.state })}>ปรับสูตรเดิม</Link>
             <span className="minor-sep" aria-hidden="true">·</span>
-            <Link className="button ghost" href="/mix" onClick={() => { track("mix_restarted", { sourceRoute: "/result" }); reset(); }}>ผสมใหม่</Link>
+            <Link className="button ghost" href="/mix" onClick={() => { track("mix_restarted", { sourceRoute: "/result" }); reset(); }}>เริ่มใหม่ทั้งหมด</Link>
           </div>
         </div>
         <AskPharmacistButton sourceRoute="/result" />

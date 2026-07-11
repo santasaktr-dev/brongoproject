@@ -80,8 +80,8 @@ score = round((matched selected ingredients / all selected ingredients) × 100)
 
 ## Edit, Reset and Persistence
 
-- `แก้สูตร`: กลับ `/mix` พร้อม selection เดิม
-- `ผสมใหม่`: ล้าง selection, score และ result state แล้วกลับ `/mix`
+- `ปรับสูตรเดิม` (เดิม `แก้สูตร`): กลับ `/mix` พร้อม selection เดิม
+- `เริ่มใหม่ทั้งหมด` (เดิม `ผสมใหม่`): ล้าง selection, score และ result state แล้วกลับ `/mix`
 - refresh `/mix` หรือ `/result`: คืน state จาก sessionStorage
 - ปิด tab หรือหมด session: ไม่จำเป็นต้องเก็บข้อมูลต่อ
 - state ที่อ่านไม่ผ่าน schema: ล้าง state และกลับ `/mix` พร้อมข้อความ `เริ่มสูตรใหม่อีกครั้งนะ`

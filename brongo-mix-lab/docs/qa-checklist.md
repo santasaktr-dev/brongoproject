@@ -18,7 +18,7 @@
 - [x] Functional additive (Vitamin B6 / ไม่ใส่) exclusive + กดซ้ำเพื่อยกเลิก
 - [x] CTA ดูผลลัพธ์ disabled เมื่อยังไม่เลือก
 - [x] ล้างสูตรผ่าน dialog (ยืนยัน/ยกเลิก/Escape)
-- [x] แก้สูตร คงสูตรเดิม, ผสมใหม่ ล้าง state
+- [x] ปรับสูตรเดิม คงสูตรเดิม, เริ่มใหม่ทั้งหมด ล้าง state
 - [x] Scoring: 100% / 60% / 0% ตรงตามสูตร (E2E)
 - [x] refresh `/mix` และ `/result` คง state (sessionStorage)
 

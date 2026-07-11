@@ -135,8 +135,9 @@
 ### Result Actions
 
 - Primary: `ดูข้อมูล BRONGO`
-- Secondary: `แก้สูตรนี้`
-- Tertiary: `ผสมใหม่`
+- Secondary: `ปรับสูตรเดิม` <!-- แก้ 2026-07-12: เดิม `แก้สูตรนี้` สับสนกับ Tertiary — รอ re-sign-off -->
+- Tertiary: `เริ่มใหม่ทั้งหมด` <!-- แก้ 2026-07-12: เดิม `ผสมใหม่` — รอ re-sign-off -->
+
 
 ### Empty/Invalid State
 
