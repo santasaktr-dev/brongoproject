@@ -19,7 +19,7 @@ export default function Home() {
           <div className="hero-art">
             <div className="bubble">พร้อมเข้าห้องทดลองหรือยัง?</div>
             <Mascot state="idle" size="hero" />
-            <ProductVisual variant="set" size="hero" priority />
+            <ProductVisual variant="packshot" size="hero" priority />
           </div>
         </section>
         <section className="how">
