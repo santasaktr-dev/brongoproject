@@ -2,18 +2,19 @@ import { test, expect, type Page } from "@playwright/test";
 
 async function mixAndSubmit(page: Page, names: string[]) {
   await page.goto("/mix");
-  for (const name of names) await page.getByRole("button", { name: new RegExp(name) }).click();
+  for (const name of names) await page.locator("button.ingredient-card", { hasText: new RegExp(name) }).click();
   await page.getByRole("button", { name: /ดูผลลัพธ์/ }).first().click();
   await page.waitForURL(/\/result$/);
 }
 
-test("result page offers LINE share + copy link with the score encoded", async ({ page }) => {
+test("result page offers LINE share + copy link with the shown score encoded", async ({ page }) => {
   await mixAndSubmit(page, ["Sucralose"]);
+  const pct = ((await page.locator(".score").textContent()) ?? "").replace("%", "").trim();
   const line = page.getByRole("link", { name: "แชร์ไป LINE" });
   await expect(line).toBeVisible();
   const href = await line.getAttribute("href");
   expect(href).toContain("line.me/R/share");
-  expect(decodeURIComponent(href!)).toContain("BRONGO 100%");
+  expect(decodeURIComponent(href!)).toContain(`BRONGO ${pct}%`);
   await expect(page.getByRole("button", { name: "คัดลอกลิงก์" })).toBeVisible();
 });
 

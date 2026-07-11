@@ -10,13 +10,14 @@ import { AskPharmacistButton } from "@/components/product/AskPharmacistButton";
 import { ingredients } from "@/content/ingredients";
 import { useGame } from "@/features/game/GameProvider";
 import { selectIngredients } from "@/features/game/selectors";
-import { calculateScore, getReaction } from "@/features/game/score";
+import { recipeScore, getReaction } from "@/features/game/score";
 import { track } from "@/lib/analytics";
 
 export default function Result() {
   const { state, ready, reset } = useGame();
   const selected = selectIngredients(ingredients, state.selectedIds);
-  const score = selected.length ? calculateScore(selected.map((i) => i.isBrongoMatch)) : null;
+  const result = selected.length ? recipeScore(selected, ingredients) : null;
+  const score = result?.score ?? null;
   const reaction = score != null ? getReaction(score) : null;
   const band = reaction?.state;
 
@@ -47,6 +48,13 @@ export default function Result() {
         <div className="result-list">
           {selected.map((item) => <ResultIngredient key={item.id} item={item} />)}
         </div>
+        {result && (result.missing > 0 || result.extra > 0) && (
+          <p className="nudge">
+            {result.missing > 0 && `ยังขาดส่วนผสมที่มีในสูตร BRONGO อีก ${result.missing} รายการ`}
+            {result.missing > 0 && result.extra > 0 && " · "}
+            {result.extra > 0 && `มีตัวที่ไม่อยู่ในสูตร ${result.extra} รายการ`}
+          </p>
+        )}
         <ShareButtons score={score} scoreBand={reaction.state} />
         <div className="next-steps">
           <Link className="button primary" href="/brongo">ดูข้อมูล BRONGO →</Link>
